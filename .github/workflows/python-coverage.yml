@@ -19,6 +19,17 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: 3.13
+      - name: Install dependencies
+        run: |
+           python -m pip install --upgrade pip
+           pip install ruff pytest
+           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      - name: Lint and format Python code with ruff
+        run: |
+         # Lint with the default set of ruff rules with GitHub Annotations
+         ruff check --format=github --target-version=py39
+         # Verify the code is properly formatted
+         ruff format --diff --target-version=py39
       - name: Run tests and generate coverage details
         run: pytest --cov=src
       - name: Coverage comment
